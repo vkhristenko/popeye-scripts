@@ -1,3 +1,7 @@
 *.pyc
 
 *.json
+
+*.swp
+*.swo
+*.swm
