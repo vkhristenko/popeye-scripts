@@ -13,6 +13,7 @@ options = {
 }
 
 date_format  = '%d-%b-%Y %H:%M:%S.%f'
+date_format_tz  = '%Y-%m-%d %H:%M:%S'
 
 def parse(
         logs, 
@@ -37,6 +38,23 @@ def parse(
                 times.append(time)
 
     return (events[0:-nvalues], times[0:-nvalues])
+
+def parseNetLog(pathToNet):
+    with open(pathToNet, "r") as f:
+        lines = f.readlines()
+        lbytes = []
+        lts = []
+        for line in lines:
+            values = line.split(" ")
+            bytess = int(values[-1])
+            ts = " ".join(values[:-1]).split("-")[:-1]
+            ts = "-".join(ts)
+            print(ts)
+            ts = datetime.datetime.strptime(ts, date_format_tz)
+            print(ts.strftime(date_format), bytess)
+            lbytes.append(bytess)
+            lts.append(ts)
+        return lts, lbytes
 
 def analyze_one_task(pathToStderr, referenceTime=datetime.datetime(2020, 1, 1)):
     # parse stuff

@@ -10,19 +10,26 @@ def analyze_one_job(pathToJob):
         hostname = t.split("__")[0]
         taskid = int(t.split("__")[1])
         if hostname not in results:
-            results[hostname] = {}
+            results[hostname] = { "tasks": {} }
+
+        if taskid == 0:
+            lbytes, lts = parseNetLog(os.path.join(task, "netlogs"))
+            results[hostname]["netlogs"] = {
+                "timestamps": lts,
+                "bytes": lbytes
+            }
 
         stderr = os.path.join(task, "logs.stderr")
         resultsPerTask = analyze_one_task(stderr)
-        assert(taskid not in results[hostname])
-        results[hostname][taskid]= resultsPerTask
+        assert(taskid not in results[hostname]["tasks"])
+        results[hostname]["tasks"][taskid] = resultsPerTask
     return results
 
 def sum_over_job(resultsPerJob):
     summ = 0
     ntasks = 0
     for key, resultsPerHost in resultsPerJob.items():
-        for key1, result in resultsPerHost.items():
+        for key1, result in resultsPerHost["tasks"].items():
             summ += result["throughput"]
             ntasks +=1 
     return (summ, ntasks)

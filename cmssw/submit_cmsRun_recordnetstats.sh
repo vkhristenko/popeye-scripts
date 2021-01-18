@@ -2,7 +2,7 @@
 
 #SBATCH --partition=general
 #SBATCH --nodes=1
-#SBATCH --ntasks=1
+#SBATCH --ntasks=6
 #SBATCH --cpus-per-task=8
 #SBATCH --wait-all-nodes=1
 #SBATCH --job-name=cmssw_m2n_iobench
@@ -30,7 +30,7 @@ do
 done
 
 # run the stuff on each node for each task/exe
-srun run_cmsRun_wrapper.sh $LOGSDIR_JOB $NUM_CORES $DATADIR
+srun run_cmsRun_recordnetstats_wrapper.sh $LOGSDIR_JOB $NUM_CORES $DATADIR
 
 # clean up the 
 rm $DATADIR/test_*.root

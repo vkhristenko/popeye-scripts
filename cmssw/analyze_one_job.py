@@ -18,7 +18,7 @@ def main():
     # print node, task, startTime endTime
     print("%10s %10s %20s %20s" % ("nodes", "task id", "startTime", "endTime"))
     for hostname, resultsPerNode in results.items():
-        for taskid, resultsPerTask in resultsPerNode.items():
+        for taskid, resultsPerTask in resultsPerNode["tasks"].items():
             print("%10s %10d %20s %20s" % (hostname, taskid, 
                 resultsPerTask["times"][0].strftime(date_format).split(" ")[1], 
                 resultsPerTask["times"][-1].strftime(date_format).split(" ")[1]))

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --partition=general
-#SBATCH --nodes=100
-#SBATCH --ntasks=600
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --wait-all-nodes=1
 #SBATCH --job-name=cmssw_m2n_iobench
