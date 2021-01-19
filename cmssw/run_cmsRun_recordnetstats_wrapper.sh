@@ -28,12 +28,14 @@ mkdir $LOGSDIR_TASK
 mkdir $WORKDIR
 cd $WORKDIR
 
-DATAFILES="file:${DATADIR}/test_${INSTANCE}.${SLURM_JOB_ID}.root"
+#DATAFILES="file:${DATADIR}/test_${INSTANCE}.${SLURM_JOB_ID}.root"
+DATAFILES="${DATADIR}/test_${INSTANCE}.${SLURM_JOB_ID}.root"
 
 # run cmsRun for instance 0
 if [ $INSTANCE -eq 0 ]
 then
-    python2 /home/vkhristenko/scripts/cmssw/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES &
+#    python2 /home/vkhristenko/scripts/cmssw/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES &
+    /home/vkhristenko/ddm/workloads/seq_io/Read2DMMs $DATAFILES &
 
     # loop and collect network usage 
     # break out when the aboe process is finished
@@ -51,7 +53,8 @@ then
     mv netlogs $LOGSDIR_TASK/
 else
     # for all the other instances
-    python2 /home/vkhristenko/scripts/cmssw/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
+    #python2 /home/vkhristenko/scripts/cmssw/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
+    /home/vkhristenko/ddm/workloads/seq_io/Read2DMMs $DATAFILES
 fi
 
 # move the logs if exist

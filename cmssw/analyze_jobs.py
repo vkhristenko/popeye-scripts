@@ -13,7 +13,11 @@ def analyze_one_job(pathToJob):
             results[hostname] = { "tasks": {} }
 
         if taskid == 0:
-            lbytes, lts = parseNetLog(os.path.join(task, "netlogs"))
+            try:
+                lts, lbytes = parseNetLog(os.path.join(task, "netlogs"))
+            except:
+                lbytes = []
+                lts = []
             results[hostname]["netlogs"] = {
                 "timestamps": lts,
                 "bytes": lbytes
@@ -33,6 +37,21 @@ def sum_over_job(resultsPerJob):
             summ += result["throughput"]
             ntasks +=1 
     return (summ, ntasks)
+
+def filterNetLogs(resultsPerNode):
+    task0FirstT = resultsPerNode["tasks"][0]["times"][0]
+    task0EndT = resultsPerNode["tasks"][0]["times"][-1]
+    netlogs = resultsPerNode["netlogs"]
+    skip0 = 0
+    skip1 = 0
+    for i in range(len(netlogs["bytes"])):
+        if netlogs["timestamps"][i] < task0FirstT:
+            skip0 += 1
+            continue
+        if netlogs["timestamps"][i] > task0EndT:
+            skip1 += 1
+            continue
+    return skip0, skip1
 
 def main():
     pathToJobs = sys.argv[1]

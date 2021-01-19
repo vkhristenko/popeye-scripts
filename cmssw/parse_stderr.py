@@ -49,9 +49,7 @@ def parseNetLog(pathToNet):
             bytess = int(values[-1])
             ts = " ".join(values[:-1]).split("-")[:-1]
             ts = "-".join(ts)
-            print(ts)
             ts = datetime.datetime.strptime(ts, date_format_tz)
-            print(ts.strftime(date_format), bytess)
             lbytes.append(bytess)
             lts.append(ts)
         return lts, lbytes
@@ -62,7 +60,7 @@ def analyze_one_task(pathToStderr, referenceTime=datetime.datetime(2020, 1, 1)):
 
     # output will be in the same folder
     justPath = pathToStderr.split("/")[0:-1]
-    outName = os.path.join("/".join(justPath), "logs.json")
+    #outName = os.path.join("/".join(justPath), "logs.json")
 
     # fit and obtain throughput values
     fit = stats.linregress(np.array([(t - referenceTime).total_seconds() for t in times]), np.array(events))
@@ -76,11 +74,10 @@ def analyze_one_task(pathToStderr, referenceTime=datetime.datetime(2020, 1, 1)):
         "times" : times
     }
 
-    jsonOutputData = copy.deepcopy(outputData)
-    jsonOutputData["times"] = [t.strftime(date_format) for t in times]
-
-    with open(outName, "w") as f:
-        f.write(json.dumps(jsonOutputData, indent=4))
+    #jsonOutputData = copy.deepcopy(outputData)
+    #jsonOutputData["times"] = [t.strftime(date_format) for t in times]
+    #with open(outName, "w") as f:
+    #    f.write(json.dumps(jsonOutputData, indent=4))
 
     return outputData
 
