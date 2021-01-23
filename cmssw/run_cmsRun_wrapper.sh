@@ -31,7 +31,7 @@ cd $WORKDIR
 DATAFILES="file:${DATADIR}/test_${INSTANCE}.${SLURM_JOB_ID}.root"
 
 # run cmsRun
-python2 /home/vkhristenko/scripts/cmssw/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
+python2 /home/vkhristenko/popeye-scripts/cmssw/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
 
 # move the logs if exist
 mv logs.stdout logs.stderr $LOGSDIR_TASK/

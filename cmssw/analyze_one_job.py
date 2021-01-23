@@ -21,14 +21,17 @@ def main():
     print("%10d %12.2f %10d" % (nnodes, summ/ntasks, summ))
 
     # print node, task, startTime endTime
-    print("%10s %10s %20s %20s" % ("hostname", "task id", "startTime", "endTime"))
+    print("%10s %10s %20s %20s %10s" % 
+        ("hostname", "task id", "startTime", "endTime", "Evs/s"))
     for hostname, resultsPerNode in results.items():
         for taskid, resultsPerTask in resultsPerNode["tasks"].items():
-            print("%10s %10d %20s %20s" % (hostname, taskid, 
+            print("%10s %10d %20s %20s %8.2f" % (hostname, taskid, 
                 resultsPerTask["times"][0].strftime(date_format).split(" ")[1], 
-                resultsPerTask["times"][-1].strftime(date_format).split(" ")[1]))
+                resultsPerTask["times"][-1].strftime(date_format).split(" ")[1],
+                resultsPerTask["throughput"]))
 
     # 
+    print("%10s %10s" % ("hostname", "MB/s"))
     for hostname, resultsPerNode in results.items():
         skipFirst, skipLast = filterNetLogs(resultsPerNode)
         lbytes = resultsPerNode["netlogs"]["bytes"][skipFirst:-skipLast]
@@ -36,9 +39,9 @@ def main():
         fit = stats.linregress(
             np.array([(t - referenceTime).total_seconds() for t in lts]), 
             np.array(lbytes))
-        for ts, bytess in zip(lts, lbytes):
-            print(ts, bytess / 1024)
-        print("bytes/s = %f" % fit.slope)
+        #for ts, bytess in zip(lts, lbytes):
+        #    print(ts.strftime(date_format), bytess / 1024 / 1024)
+        print("%10s %8.2f" % (hostname, fit.slope / 1024 / 1024))
 
 if __name__ == "__main__":
     main()

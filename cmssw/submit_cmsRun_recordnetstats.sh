@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --partition=general
-#SBATCH --nodes=1
-#SBATCH --ntasks=10
-#SBATCH --cpus-per-task=1
+#SBATCH --nodes=64
+#SBATCH --ntasks=384
+#SBATCH --cpus-per-task=8
 #SBATCH --wait-all-nodes=1
 #SBATCH --job-name=cmssw_m2n_iobench
 #SBATCH --time=01:00:00
@@ -22,8 +22,7 @@ LOGSDIR_JOB="$LOGSDIR_TOP/job_$SLURM_JOB_ID"
 mkdir $LOGSDIR_JOB
 
 # rotate input data
-#DATADIR=/mnt/sdceph/users/vkhristenko/data/miniaod/iotests
-DATADIR=/mnt/sdceph/users/vkhristenko/data/ddm/iotests
+DATADIR=/mnt/sdceph/users/vkhristenko/data/miniaod/iotests2
 for i in `seq 0 10`;
 do
     echo $i
