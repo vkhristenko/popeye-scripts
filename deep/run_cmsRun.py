@@ -24,7 +24,7 @@ set_output_encoding(encoding='utf-8', force=True)
 optionsExtra = {
     "threads" : 8,
     "streams" : 8,
-    "events" : 500,
+    "events" : 1000,
     "reportEveryNEvents" : 20
 }
 optionsCmsRun = {

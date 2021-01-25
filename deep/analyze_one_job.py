@@ -18,17 +18,22 @@ def main():
     # print simple stats
     (summ, ntasks, nnodes) = sum_over_job(results)
     print("%10s %25s %25s %10s" % ("nodes", "Average Evs/s per task", "Average Evs/s per node", "Total Evs/s"))
-    print("%10d %23.2f %23.2f %10d" % (nnodes, summ/ntasks, summ/nnodes, summ))
+    print("%10d %23.2f %23.2f %8.2f" % (nnodes, summ/ntasks, summ/nnodes, summ))
 
     # print node, task, startTime endTime
     print("%10s %10s %20s %20s %10s" % 
         ("hostname", "task id", "startTime", "endTime", "Evs/s"))
     for hostname, resultsPerNode in results.items():
         for taskid, resultsPerTask in resultsPerNode["tasks"].items():
-            print("%10s %10d %20s %20s %8.2f" % (hostname, taskid, 
-                resultsPerTask["times"][0].strftime(date_format).split(" ")[1], 
-                resultsPerTask["times"][-1].strftime(date_format).split(" ")[1],
-                resultsPerTask["throughput"]))
+            if resultsPerTask["throughput"] == 0:
+                print("%10s %10d %20s %20s %8.2f" % (hostname, taskid,
+                    "INVALID", "INVALID",
+                    resultsPerTask["throughput"]))
+            else:
+                print("%10s %10d %20s %20s %8.2f" % (hostname, taskid, 
+                    resultsPerTask["times"][0].strftime(date_format).split(" ")[1], 
+                    resultsPerTask["times"][-1].strftime(date_format).split(" ")[1],
+                    resultsPerTask["throughput"]))
 
     # 
     print("%10s %10s" % ("hostname", "MB/s"))

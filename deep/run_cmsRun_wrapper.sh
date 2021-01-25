@@ -5,6 +5,7 @@ LOGSDIR_JOB=$1
 NUM_CORES=$2
 DATADIR=$3
 VARYINPUT=$4
+USEGPU=$5
 
 THISHOST="`hostname`"
 INSTANCE=$SLURM_LOCALID
@@ -15,7 +16,12 @@ LOGSDIR_TASK="$LOGSDIR_JOB/${THISHOST}__$INSTANCE"
 #CMSRELEASE=/home/vkhristenko/cmssw_releases/CMSSW_10_2_18/src
 CMSRELEASE=/p/project/cdeep/khristenko1/cmssw_releases/cmssoft_releases/CMSSW_11_1_3_Patatrack/src/
 #CMSRUN_CFG=~/cmssw_configs/mini2nano_2018_ttjets.py
-CMSRUN_CFG=/p/project/cdeep/khristenko1/cmsrun_configs/opendata_hlt/hlt_rawinput_cpu.py
+if [ $USEGPU -eq 1 ]
+then
+    CMSRUN_CFG=/p/project/cdeep/khristenko1/cmsrun_configs/opendata_hlt/hlt_rawinput_gpu.py
+else
+    CMSRUN_CFG=/p/project/cdeep/khristenko1/cmsrun_configs/opendata_hlt/hlt_rawinput_cpu.py
+fi
 
 # cms env
 source /p/project/cdeep/khristenko1/cms_env.sh
@@ -40,7 +46,12 @@ else
 fi
 
 # run cmsRun
-python2 /p/project/cdeep/khristenko1/popeye-scripts/deep/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
+if [ $USEGPU -eq 1 ]
+then
+    LD_PRELOAD=/p/project/cdeep/khristenko1/cmssoft/slc7_amd64_gcc820/external/cuda/11.0.1/drivers/libcuda.so.450.36.06:/p/project/cdeep/khristenko1/cmssoft/slc7_amd64_gcc820/external/cuda/11.0.1/drivers/libnvidia-ptxjitcompiler.so.450.36.06 python2 /p/project/cdeep/khristenko1/popeye-scripts/deep/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
+else
+    python2 /p/project/cdeep/khristenko1/popeye-scripts/deep/run_cmsRun.py $CMSRUN_CFG $NUM_CORES $DATAFILES
+fi
 mv logs.stderr logs.stderr.full
 head -5000 logs.stderr.full > logs.stderr
 

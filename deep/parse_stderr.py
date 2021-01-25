@@ -55,6 +55,10 @@ def parseNetLog(pathToNet):
             lts.append(ts)
         return lts, lbytes
 
+class SomeFit:
+    def __init__(self):
+        self.slope = 0
+
 def analyze_one_task(pathToStderr, referenceTime=datetime.datetime(2020, 1, 1)):
     # parse stuff
     events, times = parse(pathToStderr, **options)
@@ -64,7 +68,12 @@ def analyze_one_task(pathToStderr, referenceTime=datetime.datetime(2020, 1, 1)):
     #outName = os.path.join("/".join(justPath), "logs.json")
 
     # fit and obtain throughput values
-    fit = stats.linregress(np.array([(t - referenceTime).total_seconds() for t in times]), np.array(events))
+    try:
+        fit = stats.linregress(np.array([(t - referenceTime).total_seconds() for t in times]), np.array(events))
+    except:
+        print("failed to parse task %s" % pathToStderr)
+        fit = SomeFit()
+        #raise ValueError("failed ot parse task % " % pathToStderr)
 
     outputData = {
         "throughput": fit.slope,
