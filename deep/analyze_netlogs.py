@@ -11,13 +11,13 @@ def main():
 
     lts, lbytes = parseNetLog(pathToNetlog)
     for ts, bytess in zip(lts, lbytes):
-        print(ts.strftime(date_format), bytess / 1024 / 1024)
+        print(ts.strftime(date_format), bytess)
 
     referenceTime=datetime.datetime(2020, 1, 1)
     fit = stats.linregress(
         np.array([(t - referenceTime).total_seconds() for t in lts]),
         np.array(lbytes))
-    print("bytes/s = %f" % (fit.slope / 1024 / 1024))
+    print("MB/s = %f" % (fit.slope / 1024 / 1024))
 
 if __name__ == "__main__":
     main()

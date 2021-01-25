@@ -46,8 +46,6 @@ def main():
         fit = stats.linregress(
             np.array([(t - referenceTime).total_seconds() for t in lts]), 
             np.array(lbytes))
-        #for ts, bytess in zip(lts, lbytes):
-        #    print(ts.strftime(date_format), bytess / 1024 / 1024)
         print("%10s %8.2f" % (hostname, fit.slope / 1024 / 1024))
 
 if __name__ == "__main__":

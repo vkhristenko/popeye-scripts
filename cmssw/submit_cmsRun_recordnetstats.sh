@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --partition=general
-#SBATCH --nodes=64
-#SBATCH --ntasks=384
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=6
 #SBATCH --cpus-per-task=8
 #SBATCH --wait-all-nodes=1
 #SBATCH --job-name=cmssw_m2n_iobench
@@ -23,7 +23,7 @@ mkdir $LOGSDIR_JOB
 
 # rotate input data
 DATADIR=/mnt/sdceph/users/vkhristenko/data/miniaod/iotests2
-for i in `seq 0 10`;
+for i in `seq 0 ${SLURM_NTASKS_PER_NODE}`;
 do
     echo $i
     cp $DATADIR/test.root $DATADIR/test_${i}.${SLURM_JOB_ID}.root
