@@ -36,7 +36,7 @@ def main():
                     resultsPerTask["throughput"]))
 
     # 
-    print("%10s %10s" % ("hostname", "MB/s"))
+    print("%10s %10s %20s %20s" % ("hostname", "MB/s", "startTime", "endTime"))
     for hostname, resultsPerNode in results.items():
         skipFirst, skipLast = filterNetLogs(resultsPerNode)
         lbytes = resultsPerNode["netlogs"]["bytes"][skipFirst:-skipLast]
@@ -46,7 +46,10 @@ def main():
         fit = stats.linregress(
             np.array([(t - referenceTime).total_seconds() for t in lts]), 
             np.array(lbytes))
-        print("%10s %8.2f" % (hostname, fit.slope / 1024 / 1024))
+        print("%10s %8.2f %20s %20s" % 
+            (hostname, fit.slope / 1024 / 1024, 
+                lts[0].strftime(date_format).split(" ")[1],
+                lts[-1].strftime(date_format).split(" ")[1]))
 
 if __name__ == "__main__":
     main()
