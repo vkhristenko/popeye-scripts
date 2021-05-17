@@ -15,12 +15,19 @@ def analyze_one_job(pathToJob):
         if taskid == 0:
             try:
                 lts, lbytes = parseNetLog(os.path.join(task, "netlogs"))
+                lcputs, lcpus = parseCpuLog(os.path.join(task, "cpuutillogs"))
             except:
                 lbytes = []
                 lts = []
+                lcputs = []
+                lcpus = [[] for i in range(48)]
             results[hostname]["netlogs"] = {
                 "timestamps": lts,
                 "bytes": lbytes
+            }
+            results[hostname]["cpuutil"] = {
+                "timestamps" : lcputs,
+                "cpuutil" : lcpus
             }
 
         stderr = os.path.join(task, "logs.stderr")

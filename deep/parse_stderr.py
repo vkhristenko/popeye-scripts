@@ -9,7 +9,7 @@ import json
 import copy
 
 options = {
-    "skip" : 100
+    "skip" : 10
 }
 
 date_format  = '%d-%b-%Y %H:%M:%S.%f'
@@ -54,6 +54,21 @@ def parseNetLog(pathToNet):
             lbytes.append(bytess)
             lts.append(ts)
         return lts, lbytes
+
+def parseCpuLog(pathToCpu):
+    with open(pathToCpu, "r") as f:
+        lines = f.readlines()
+        lcpus = [[] for i in range(48)]
+        lts = []
+        for line in lines:
+            line = line.rstrip()
+            if line[:5] == "Linux" or line[:7] == "Average" or line == "": continue
+            values = line.split()
+            if values[1] == "all" or values[1] == "CPU": continue
+            cpuid = int(values[1])
+            lcpus[cpuid].append(float(values[2]))
+            lts.append(values[0])
+    return lts, lcpus
 
 class SomeFit:
     def __init__(self):

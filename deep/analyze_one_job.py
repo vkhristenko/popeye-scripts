@@ -7,6 +7,8 @@ from scipy import stats
 import datetime
 import numpy as np
 
+import matplotlib.pyplot as plt
+
 def main():
     pathToJob = sys.argv[1]
 
@@ -37,6 +39,7 @@ def main():
 
     # 
     print("%10s %10s %20s %20s" % ("hostname", "MB/s", "startTime", "endTime"))
+    total = 0
     for hostname, resultsPerNode in results.items():
         skipFirst, skipLast = filterNetLogs(resultsPerNode)
         lbytes = resultsPerNode["netlogs"]["bytes"][skipFirst:-skipLast]
@@ -50,6 +53,21 @@ def main():
             (hostname, fit.slope / 1024 / 1024, 
                 lts[0].strftime(date_format).split(" ")[1],
                 lts[-1].strftime(date_format).split(" ")[1]))
+        total += fit.slope / 1024 / 1024
+    print("Aggregated Bandwidth = %10s MB/s" % (total))
+
+    #
+    for hostname, resultsPerNode in results.items():
+        print(len(resultsPerNode["cpuutil"]["cpuutil"]),
+            len(resultsPerNode["cpuutil"]["cpuutil"][0]))
+
+        Y = np.array([i for i in range(len(resultsPerNode["cpuutil"]["cpuutil"]))])
+        X = np.array([i for i in range(len(resultsPerNode["cpuutil"]["cpuutil"][0]))])
+        Z = np.array(resultsPerNode["cpuutil"]["cpuutil"])
+        plt.figure(1)
+        plt.contour([X, Y], Z)
+        plt.savefig("cpuutil.png")
+
 
 if __name__ == "__main__":
     main()
