@@ -9,7 +9,7 @@ import json
 import copy
 
 options = {
-    "skip" : 10
+    "skip" : 50
 }
 
 date_format  = '%d-%b-%Y %H:%M:%S.%f'

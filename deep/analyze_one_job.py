@@ -57,6 +57,7 @@ def main():
     print("Aggregated Bandwidth = %10s MB/s" % (total))
 
     #
+    sssss = """
     for hostname, resultsPerNode in results.items():
         print(len(resultsPerNode["cpuutil"]["cpuutil"]),
             len(resultsPerNode["cpuutil"]["cpuutil"][0]))
@@ -67,6 +68,7 @@ def main():
         plt.figure(1)
         plt.contour([X, Y], Z)
         plt.savefig("cpuutil.png")
+    """
 
 
 if __name__ == "__main__":

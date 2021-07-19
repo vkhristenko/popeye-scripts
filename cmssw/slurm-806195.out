@@ -1,0 +1,9 @@
+mkdir: cannot create directory '/pcn-2-06__0': Permission denied
+Traceback (most recent call last):
+  File "/home/vkhristenko/popeye-scripts/cmssw/run_cmsRun.py", line 149, in <module>
+    main()
+  File "/home/vkhristenko/popeye-scripts/cmssw/run_cmsRun.py", line 120, in main
+    threads = int(sys.argv[2])
+ValueError: invalid literal for int() with base 10: 'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/TTJets_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/10000/02CDAB0B-7ED5-7246-AE11-9C3B953C0E8B.root'
+mv: cannot create regular file '/pcn-2-06__0/': Not a directory
+mv: target '/pcn-2-06__0/' is not a directory

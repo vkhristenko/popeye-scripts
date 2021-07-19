@@ -2,9 +2,9 @@
 
 #SBATCH --partition=preempt
 #SBATCH --qos=preempt
-#SBATCH --nodes=32
-#SBATCH --ntasks-per-node=24
-#SBATCH --cpus-per-task=2
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=32
+#SBATCH --cpus-per-task=1
 #SBATCH --wait-all-nodes=1
 #SBATCH --job-name=cmssw_m2n_iobench
 #SBATCH --time=02:00:00
@@ -31,7 +31,7 @@ mkdir $LOGSDIR_JOB
 #done
 
 # run the stuff on each node for each task/exe
-srun run_cmsRun_recordnetstats_wrapper.sh $LOGSDIR_JOB $NUM_CORES $DATADIR
+srun run_cmsNano_recordnetstats_wrapper.sh $LOGSDIR_JOB $NUM_CORES $DATADIR
 
 # clean up the 
 #rm $DATADIR/test_*.root
